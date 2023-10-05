@@ -3,39 +3,44 @@
 The player that cannot make a move loses the game.
 """
 
-
 def isWinner(x, nums):
-    """
-    Return: name of the player that won the most rounds.
-    If the winner cannot be determined, return `None`.
-    """
     def is_prime(n):
-        """"""
-        remainders = []
-        if (n <= 1):
+        if n <= 1:
             return False
-        if (n <= 3):
+        if n <= 3:
             return True
-        if (n % 2 == 0 or n % 3 == 0):
+        if n % 2 == 0 or n % 3 == 0:
             return False
         i = 5
-        while(i * i <= n):
-            if (n % i == 0 or n % (i + 2) == 0):
+        while i * i <= n:
+            if n % i == 0 or n % (i + 2) == 0:
                 return False
-            i = i + 6
+            i += 6
         return True
 
-    nums.sort()
+    def get_primes(n):
+        return [i for i in range(2, n+1) if is_prime(i)]
 
-    def primes(nums):
-        """"""
-        primes = []
-        for n in nums:
-            if is_prime(n):
-                primes.append(n)
+    def play_round(n):
+        primes = get_primes(n)
+        if len(primes) % 2 == 1:
+            return "Maria"
+        else:
+            return "Ben"
 
-        return primes
+    ben_wins = 0
+    maria_wins = 0
 
-    moves = primes(nums)
+    for n in nums:
+        winner = play_round(n)
+        if winner == "Ben":
+            ben_wins += 1
+        elif winner == "Maria":
+            maria_wins += 1
 
-    return "Ben"
+    if ben_wins > maria_wins:
+        return "Ben"
+    elif maria_wins > ben_wins:
+        return "Maria"
+    else:
+        return None
